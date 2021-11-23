@@ -1,46 +1,37 @@
 import { lazy } from "react";
+import Dashboard from "../views/dashboard";
+import Resturants from "../views/resturants";
+import Notification from "../views/notification";
+import Login from "../views/auth/login";
+import Register from "../views/auth/register";
+
 const routeItem = [
   {
     path: "/",
     exact: true,
-    component: lazy(() => import("../views/dashboard")),
-    meta: {
-      authRoute: true,
-    },
+    component: Dashboard,
   },
   {
     path: "/resturants",
     exact: true,
-    component: lazy(() => import("../views/resturants")),
-    meta: {
-      authRoute: true,
-    },
+    component: Resturants,
   },
   {
     path: "/notifications",
     exact: true,
-    component: lazy(() => import("../views/notification")),
-    meta: {
-      authRoute: true,
-    },
+    component: Notification,
   },
   {
     path: "/login",
     exact: true,
-    component: lazy(() => import("../views/auth/login")),
-    layout: "BlankLayout",
-    meta: {
-      publicRoute: true,
-    },
+    component: Login,
+    authNotRequired: true,
   },
   {
     path: "/register",
     exact: true,
-    component: lazy(() => import("../views/auth/register")),
-    layout: "BlankLayout",
-    meta: {
-      publicRoute: true,
-    },
+    component: Register,
+    authNotRequired: true,
   },
 ];
 

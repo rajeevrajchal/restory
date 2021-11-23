@@ -1,6 +1,6 @@
 import { useState, useContext, createContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth } from "../plugins/firebase";
 
@@ -13,16 +13,22 @@ const { Provider } = authContext;
 
 const useAuthProvider = () => {
   const [loggedUser, setLoggedUser] = useState(null as any);
-  const history = useHistory();
+  const navigate = useNavigate();
+  let location = useLocation();
 
-  // functions
-  const isUserLoggedIn = () => loggedUser;
+  let from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    if (loggedUser) {
+      navigate(from, { replace: true });
+    }
+  }, [loggedUser, navigate,from]);
 
   const login = async (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((loginRes: any) => {
         setLoggedUser(loginRes.user);
-        history.push("/");
+        navigate("/", { replace: true });
         toast.success("Login sucess");
       })
       .catch((err: any) => {
@@ -36,7 +42,7 @@ const useAuthProvider = () => {
     signOut(auth)
       .then(() => {
         setLoggedUser(null);
-        history.push("/login");
+        navigate("/login", { replace: true });
       })
       .catch(() => {
         toast.error("Logging out failed");
@@ -60,7 +66,6 @@ const useAuthProvider = () => {
     loggedUser,
     login,
     logout,
-    isUserLoggedIn,
     handleAuthStateChanged,
   };
 };
