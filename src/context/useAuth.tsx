@@ -22,7 +22,7 @@ const useAuthProvider = () => {
     if (loggedUser) {
       navigate(from, { replace: true });
     }
-  }, [loggedUser, navigate,from]);
+  }, [loggedUser]);
 
   const login = async (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
@@ -38,7 +38,6 @@ const useAuthProvider = () => {
   };
 
   const logout = () => {
-    console.log("hello world");
     signOut(auth)
       .then(() => {
         setLoggedUser(null);

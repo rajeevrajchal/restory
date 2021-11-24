@@ -10,7 +10,6 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   const { loggedUser } = useAuth();
   let location = useLocation();
 
-  console.log("requireAuth")
   if (!loggedUser) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
