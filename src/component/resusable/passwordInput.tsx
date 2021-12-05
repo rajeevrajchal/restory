@@ -1,13 +1,11 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable jsx-quotes */
 import { useState } from 'react';
 import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 
 interface PasswordInputProps {
   name: string;
   value: string | undefined;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isInvalid: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const PasswordInput = (props: PasswordInputProps) => {

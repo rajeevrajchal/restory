@@ -1,4 +1,4 @@
-/* eslint-disable jsx-quotes */
+import { useState } from "react";
 import { FC } from "react";
 import {
   Box,
@@ -14,15 +14,16 @@ import * as Yup from "yup";
 import { useAuth } from "../../context/useAuth";
 import AppHelmet from "../../component/helmet";
 import AuthHeader from "./components/authHeader";
-import PasswordInput from "../../component/passwordInput";
+import PasswordInput from "../../component/resusable/passwordInput";
 
 const Login: FC = () => {
+  const [btnLoading, setBtnLoading] = useState<boolean>(false);
   const { colorMode } = useColorMode();
   const { login } = useAuth();
   const formik = useFormik<any>({
     initialValues: {
-      email: "",
-      password: "",
+      email: "demo@restory.com",
+      password: "demopass",
     },
     validationSchema: Yup.object().shape({
       email: Yup.string().email("Invalid email").required("Required"),
@@ -31,6 +32,7 @@ const Login: FC = () => {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       await login(values.email, values.password);
       setSubmitting(false);
+      setBtnLoading(true);
       resetForm();
     },
   });
@@ -88,9 +90,13 @@ const Login: FC = () => {
               colorScheme="teal"
               size="md"
               w="60%"
-              isLoading={formik.isSubmitting}
-              isDisabled={formik.isSubmitting}
-              onClick={() => formik.handleSubmit()}
+              isLoading={Boolean(btnLoading)}
+              isDisabled={Boolean(btnLoading)}
+              onClick={() => {
+                formik.setSubmitting(true);
+                setBtnLoading(true);
+                formik.handleSubmit();
+              }}
             >
               Login
             </Button>
@@ -100,7 +106,7 @@ const Login: FC = () => {
               w="60%"
               variant="link"
               marginTop={4}
-              sDisabled={formik.isSubmitting}
+              isDisabled={Boolean(btnLoading)}
             >
               <Link to="/register">No Account ? Register</Link>
             </Button>

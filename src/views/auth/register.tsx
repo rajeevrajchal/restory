@@ -12,7 +12,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import AuthHeader from "./components/authHeader";
-import PasswordInput from "../../component/passwordInput";
+import PasswordInput from "../../component/resusable/passwordInput";
 import AppHelmet from "../../component/helmet";
 import { useAuth } from "../../context/useAuth";
 

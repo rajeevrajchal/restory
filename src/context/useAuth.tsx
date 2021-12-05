@@ -1,28 +1,73 @@
 import { useState, useContext, createContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import {
+  signInWithEmailAndPassword,
+  signOut,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+
 import { toast } from "react-toastify";
-import { auth } from "../plugins/firebase";
+import { auth, db } from "../plugins/firebase";
 
 const authContext = createContext({
   loggedUser: null,
-  isLoading: false,
+  loading: false,
 } as any);
 
 const { Provider } = authContext;
 
 const useAuthProvider = () => {
   const [loggedUser, setLoggedUser] = useState(null as any);
-  const history = useHistory();
+  const [loading, setLoading] = useState<boolean>(false);
+
+ const navigate = useNavigate();
 
   // functions
-  const isUserLoggedIn = () => loggedUser;
+  const isUserLoggedIn = () => loggedUser !== null;
+
+  const register = async (userData: any) => {
+    // eslint-disable-next-line object-curly-newline
+    const { email, password, username, firstname, lastname } = userData;
+    console.log("the user data are", {
+      email,
+      password,
+      username,
+      firstname,
+      lastname,
+    });
+
+    createUserWithEmailAndPassword(auth, email, password || "")
+      .then((userCredential: any) => {
+        // eslint-disable-next-line no-shadow
+        const { user } = userCredential;
+        addDoc(collection(db, "users"), {
+          uid: user.uid,
+          username,
+          firstname,
+          lastname,
+          authProvider: "local",
+          email,
+        })
+          .then(() => {
+            toast.success(`Welcome to ReStory ${username}`);
+          })
+          .catch(err => {
+            console.log("err inside function", err);
+            toast.error(`Failed to create user`);
+          });
+      })
+      .catch((err: any) => {
+        console.error("error", { err });
+        toast.error(`Failed to create user`);
+      });
+  };
 
   const login = async (email: string, password: string) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((loginRes: any) => {
         setLoggedUser(loginRes.user);
-        history.push("/");
+        navigate(`/`);
         toast.success("Login sucess");
       })
       .catch((err: any) => {
@@ -32,11 +77,10 @@ const useAuthProvider = () => {
   };
 
   const logout = () => {
-    console.log("hello world");
     signOut(auth)
       .then(() => {
         setLoggedUser(null);
-        history.push("/login");
+        navigate("/login");
       })
       .catch(() => {
         toast.error("Logging out failed");
@@ -44,11 +88,13 @@ const useAuthProvider = () => {
   };
 
   const handleAuthStateChanged = (user: any) => {
-    console.log("the user", user);
+    setLoading(true);
     if (user?.uid) {
       setLoggedUser(user);
     }
+    setLoading(false);
   };
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(handleAuthStateChanged);
@@ -60,6 +106,8 @@ const useAuthProvider = () => {
     loggedUser,
     login,
     logout,
+    register,
+    loading,
     isUserLoggedIn,
     handleAuthStateChanged,
   };

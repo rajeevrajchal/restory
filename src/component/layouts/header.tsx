@@ -37,14 +37,14 @@ const Header = () => {
         />
       </Box>
       <Flex alignContent="center" alignItems="center" marginRight="20px">
+        <Account />
         <Box
-          mr="30px"
+          ml="30px"
           as={colorMode === "dark" ? BsSun : BsMoon}
           size={colorMode === "dark" ? "20px" : "18px"}
           cursor="pointer"
           onClick={toggleColorMode}
         />
-        <Account />
       </Flex>
     </Flex>
   );

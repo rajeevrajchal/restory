@@ -1,15 +1,16 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import { map } from "lodash";
-import { useLocation } from "react-router-dom";
 
-import NavItem from "./navitem";
 import { useLayout } from "../../context/useLayout";
+import { useAppData } from "../../context/useAppData";
+import NavItem from "./navitem";
 import SidebarItems, { SidebarItemType } from "../../navigation/sidebar";
 
 const Sidebar = () => {
   const { navSize } = useLayout();
-  const { pathname } = useLocation();
-  console.log("the location", pathname);
+  const {
+    activeRoute: { activeRoute, setActiveRoute },
+  } = useAppData();
   return (
     <Flex
       h="100%"
@@ -48,7 +49,8 @@ const Sidebar = () => {
             navSize={navSize}
             sidebar={sidebar}
             key={sidebar.label}
-            active={pathname === sidebar.path}
+            active={activeRoute === sidebar.activeRoute}
+            setActiveRoute={setActiveRoute}
           />
         ))}
       </Flex>

@@ -5,7 +5,9 @@ ReStory
 ## Available Scripts
 
 In the project directory, you can run:
+### `yarn install`
 
+To install all required package on this app. 
 ### `yarn start`
 
 Runs the app in the development mode.\

@@ -1,8 +1,26 @@
+import { useState, useEffect } from "react";
 import { Grid, Box, Text, Button } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
+import DashboardSkeleton from "../../component/loaders/skeletons/dashboardskeleton";
+import { useAppData } from "../../context/useAppData";
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const {
+    activeRoute: { setActiveRoute },
+  } = useAppData();
+
+  useEffect(() => {
+    setActiveRoute("home");
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
   return (
     <Grid templateColumns={["repeat(1, 1fr)", "repeat(3, 1fr)"]} gap={6}>
       <Box

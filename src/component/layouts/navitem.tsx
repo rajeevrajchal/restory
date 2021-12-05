@@ -6,9 +6,10 @@ interface NavItemProps {
   navSize: string;
   active?: boolean;
   sidebar: SidebarItemType;
+  setActiveRoute: (obj: string) => void;
 }
 const NavItem = (props: NavItemProps) => {
-  const { navSize, active, sidebar } = props;
+  const { navSize, active, sidebar, setActiveRoute } = props;
   return (
     <Tooltip hasArrow label={sidebar.label} isDisabled={navSize !== "small"}>
       <NavLink
@@ -16,6 +17,7 @@ const NavItem = (props: NavItemProps) => {
         style={{
           width: navSize === "small" ? "100%" : "80%",
         }}
+        onClick={() => setActiveRoute(sidebar.activeRoute)}
       >
         <Box
           p={3}

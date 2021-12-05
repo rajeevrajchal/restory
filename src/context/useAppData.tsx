@@ -1,4 +1,5 @@
 import { useContext, createContext } from "react";
+import useActiveRoute from "../hooks/useActiveRoute";
 import useResturant from "../hooks/useResturant";
 
 const appDataContext = createContext<any>({
@@ -8,8 +9,11 @@ const { Provider } = appDataContext;
 
 const useAppDataProvider = () => {
   const resturantData = useResturant();
+  const activeRoute = useActiveRoute();
+
   return {
     resturantData,
+    activeRoute,
   };
 };
 

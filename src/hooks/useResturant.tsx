@@ -5,19 +5,19 @@ import { toast } from "react-toastify";
 
 const useResturant = () => {
   const collRef = collection(db, "resturants");
-  const [resturants, setResturants] = useState<any>([]);
+  const [resturants, setResturants] = useState<any>(null);
 
   const getResturants = () => {
     onSnapshot(
       collRef,
-      snapshot => {
+      (snapshot) => {
         let resturants: any = [];
-        snapshot.docs.forEach(doc => {
+        snapshot.docs.forEach((doc) => {
           resturants.push({ ...doc.data(), id: doc.id });
         });
         setResturants(resturants);
       },
-      error => {
+      (error) => {
         console.log("errors", error.message);
         toast.error(error.message);
       }
@@ -34,13 +34,12 @@ const useResturant = () => {
           type === "verified" ? "Resturant Verified" : "Resturant Publiced"
         );
       })
-      .catch(err => {
+      .catch((err) => {
         toast.error(err.message);
         console.log("the error", err);
       });
   };
 
-  console.log("resturants", resturants);
   return {
     resturants,
     // functions

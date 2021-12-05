@@ -1,11 +1,8 @@
-import React from "react";
+import { Outlet } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
-interface BlankLayoutProps {
-  children: React.ReactNode | JSX.Element | JSX.Element[];
-}
-const BlankLayout = (props: BlankLayoutProps) => {
-  const { children } = props;
-  return <Box w="100%">{children}</Box>;
+
+const BlankLayout = () => {
+  return <Box w="100%"><Outlet/></Box>;
 };
 
 export default BlankLayout;
