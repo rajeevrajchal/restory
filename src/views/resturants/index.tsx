@@ -16,7 +16,7 @@ import { useNavigate } from "react-router";
 
 const Restaurants = () => {
   const {
-    resturantData: { loading, resturants, verifyResturant, getResturants },
+    resturantData: { resturants, verifyResturant, getResturants },
   } = useAppData();
   const { colorMode } = useColorMode();
   const navigate = useNavigate();

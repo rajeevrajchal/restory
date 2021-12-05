@@ -67,11 +67,7 @@ const useAuthProvider = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((loginRes: any) => {
         setLoggedUser(loginRes.user);
-<<<<<<< HEAD
-        navigate(`/`);
-=======
         navigate("/", { replace: true });
->>>>>>> 95c5d1db8e89fb3ff67911b3d65ec2cb8f9e035c
         toast.success("Login sucess");
       })
       .catch((err: any) => {
